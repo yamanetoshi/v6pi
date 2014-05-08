@@ -33,10 +33,12 @@ COPS = -Wall -nostartfiles -ffreestanding
 CFLAGS = -mcpu=arm1176jzf-s -mtune=arm1176jzf-s -mfloat-abi=softfp -O1 -ggdb -g
 
 # YAGARTO実行ファイルのパスとプレフィックス
-ARMGNU = $(YAGARTO)/bin/arm-none-eabi
+#ARMGNU = $(YAGARTO)/bin/arm-none-eabi
+ARMGNU=~/cross/rpi/arm-unknown-eabi/bin/arm-unknown-eabi
 
 # ライブラリ
-LIB = -L $(YAGARTO)/lib/gcc/arm-none-eabi/4.7.2 -L $(YAGARTO)/arm-none-eabi/lib
+#LIB = -L $(YAGARTO)/lib/gcc/arm-none-eabi/4.7.2 -L $(YAGARTO)/arm-none-eabi/lib
+LIB=-L ~/cross/rpi/arm-unknown-eabi/lib/gcc/arm-unknown-eabi/4.8.1
 
 ########################################
 # 以下は原則として変更しない
@@ -66,7 +68,7 @@ clean :
 	rm -f *.map
 
 $(TARGET).elf : $(AOBJS) $(OBJS)
-	$(ARMGNU)-ld $(AOBJS) $(OBJS) -Map=$(TARGET).map -T $(MEMMAP) -o $@ $(LIB) -lc -lm -lgcc
+	$(ARMGNU)-ld $(AOBJS) $(OBJS) -Map=$(TARGET).map -T $(MEMMAP) -o $@ $(LIB) -lgcc
 	$(ARMGNU)-objdump -D $(TARGET).elf > $(TARGET).list
 
 $(TARGET).bin : $(TARGET).elf
